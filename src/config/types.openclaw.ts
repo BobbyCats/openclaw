@@ -68,6 +68,8 @@ export type OpenClawConfig = {
   ui?: {
     /** Accent color for OpenClaw UI chrome (hex). */
     seamColor?: string;
+    /** UI locale override (e.g. "en", "zh-CN"). Auto-detected from browser/system if unset. */
+    locale?: "en" | "zh-CN";
     assistant?: {
       /** Assistant display name for UI surfaces. */
       name?: string;

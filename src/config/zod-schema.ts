@@ -233,6 +233,8 @@ export const OpenClawSchema = z
     ui: z
       .object({
         seamColor: HexColorSchema.optional(),
+        /** UI locale override (e.g. "en", "zh-CN"). Auto-detected from browser/system if unset. */
+        locale: z.enum(["en", "zh-CN"]).optional(),
         assistant: z
           .object({
             name: z.string().max(50).optional(),

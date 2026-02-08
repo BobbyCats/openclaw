@@ -307,6 +307,7 @@ const FIELD_LABELS: Record<string, string> = {
   "commands.useAccessGroups": "Use Access Groups",
   "commands.ownerAllowFrom": "Command Owners",
   "ui.seamColor": "Accent Color",
+  "ui.locale": "UI Language",
   "ui.assistant.name": "Assistant Name",
   "ui.assistant.avatar": "Assistant Avatar",
   "browser.evaluateEnabled": "Browser Evaluate Enabled",
