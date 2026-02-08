@@ -3,6 +3,7 @@ import { dashboardCommand } from "../../commands/dashboard.js";
 import { doctorCommand } from "../../commands/doctor.js";
 import { resetCommand } from "../../commands/reset.js";
 import { uninstallCommand } from "../../commands/uninstall.js";
+import { t } from "../../i18n/index.js";
 import { defaultRuntime } from "../../runtime.js";
 import { formatDocsLink } from "../../terminal/links.js";
 import { theme } from "../../terminal/theme.js";
@@ -11,20 +12,20 @@ import { runCommandWithRuntime } from "../cli-utils.js";
 export function registerMaintenanceCommands(program: Command) {
   program
     .command("doctor")
-    .description("Health checks + quick fixes for the gateway and channels")
+    .description(t("cli.cmd.doctor.desc"))
     .addHelpText(
       "after",
       () =>
         `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/doctor", "docs.openclaw.ai/cli/doctor")}\n`,
     )
-    .option("--no-workspace-suggestions", "Disable workspace memory system suggestions", false)
-    .option("--yes", "Accept defaults without prompting", false)
-    .option("--repair", "Apply recommended repairs without prompting", false)
-    .option("--fix", "Apply recommended repairs (alias for --repair)", false)
-    .option("--force", "Apply aggressive repairs (overwrites custom service config)", false)
-    .option("--non-interactive", "Run without prompts (safe migrations only)", false)
-    .option("--generate-gateway-token", "Generate and configure a gateway token", false)
-    .option("--deep", "Scan system services for extra gateway installs", false)
+    .option("--no-workspace-suggestions", t("cli.cmd.doctor.noWorkspaceSuggestionsOpt"), false)
+    .option("--yes", t("cli.cmd.doctor.yesOpt"), false)
+    .option("--repair", t("cli.cmd.doctor.repairOpt"), false)
+    .option("--fix", t("cli.cmd.doctor.fixOpt"), false)
+    .option("--force", t("cli.cmd.doctor.forceOpt"), false)
+    .option("--non-interactive", t("cli.cmd.doctor.nonInteractiveOpt"), false)
+    .option("--generate-gateway-token", t("cli.cmd.doctor.generateTokenOpt"), false)
+    .option("--deep", t("cli.cmd.doctor.deepOpt"), false)
     .action(async (opts) => {
       await runCommandWithRuntime(defaultRuntime, async () => {
         await doctorCommand(defaultRuntime, {
@@ -41,13 +42,13 @@ export function registerMaintenanceCommands(program: Command) {
 
   program
     .command("dashboard")
-    .description("Open the Control UI with your current token")
+    .description(t("cli.cmd.dashboard.desc"))
     .addHelpText(
       "after",
       () =>
         `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/dashboard", "docs.openclaw.ai/cli/dashboard")}\n`,
     )
-    .option("--no-open", "Print URL but do not launch a browser", false)
+    .option("--no-open", t("cli.cmd.dashboard.noOpenOpt"), false)
     .action(async (opts) => {
       await runCommandWithRuntime(defaultRuntime, async () => {
         await dashboardCommand(defaultRuntime, {
@@ -58,16 +59,16 @@ export function registerMaintenanceCommands(program: Command) {
 
   program
     .command("reset")
-    .description("Reset local config/state (keeps the CLI installed)")
+    .description(t("cli.cmd.reset.desc"))
     .addHelpText(
       "after",
       () =>
         `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/reset", "docs.openclaw.ai/cli/reset")}\n`,
     )
-    .option("--scope <scope>", "config|config+creds+sessions|full (default: interactive prompt)")
-    .option("--yes", "Skip confirmation prompts", false)
-    .option("--non-interactive", "Disable prompts (requires --scope + --yes)", false)
-    .option("--dry-run", "Print actions without removing files", false)
+    .option("--scope <scope>", t("cli.cmd.reset.scopeOpt"))
+    .option("--yes", t("cli.cmd.common.yesOpt"), false)
+    .option("--non-interactive", t("cli.cmd.common.nonInteractiveScopeOpt"), false)
+    .option("--dry-run", t("cli.cmd.common.dryRunOpt"), false)
     .action(async (opts) => {
       await runCommandWithRuntime(defaultRuntime, async () => {
         await resetCommand(defaultRuntime, {
@@ -81,20 +82,20 @@ export function registerMaintenanceCommands(program: Command) {
 
   program
     .command("uninstall")
-    .description("Uninstall the gateway service + local data (CLI remains)")
+    .description(t("cli.cmd.uninstall.desc"))
     .addHelpText(
       "after",
       () =>
         `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/uninstall", "docs.openclaw.ai/cli/uninstall")}\n`,
     )
-    .option("--service", "Remove the gateway service", false)
-    .option("--state", "Remove state + config", false)
-    .option("--workspace", "Remove workspace dirs", false)
-    .option("--app", "Remove the macOS app", false)
-    .option("--all", "Remove service + state + workspace + app", false)
-    .option("--yes", "Skip confirmation prompts", false)
-    .option("--non-interactive", "Disable prompts (requires --yes)", false)
-    .option("--dry-run", "Print actions without removing files", false)
+    .option("--service", t("cli.cmd.uninstall.serviceOpt"), false)
+    .option("--state", t("cli.cmd.uninstall.stateOpt"), false)
+    .option("--workspace", t("cli.cmd.uninstall.workspaceOpt"), false)
+    .option("--app", t("cli.cmd.uninstall.appOpt"), false)
+    .option("--all", t("cli.cmd.uninstall.allOpt"), false)
+    .option("--yes", t("cli.cmd.common.yesOpt"), false)
+    .option("--non-interactive", t("cli.cmd.common.nonInteractiveOpt"), false)
+    .option("--dry-run", t("cli.cmd.common.dryRunOpt"), false)
     .action(async (opts) => {
       await runCommandWithRuntime(defaultRuntime, async () => {
         await uninstallCommand(defaultRuntime, {

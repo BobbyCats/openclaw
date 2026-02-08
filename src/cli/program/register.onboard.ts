@@ -8,6 +8,7 @@ import type {
   TailscaleMode,
 } from "../../commands/onboard-types.js";
 import { onboardCommand } from "../../commands/onboard.js";
+import { t } from "../../i18n/index.js";
 import { defaultRuntime } from "../../runtime.js";
 import { formatDocsLink } from "../../terminal/links.js";
 import { theme } from "../../terminal/theme.js";
@@ -40,22 +41,22 @@ function resolveInstallDaemonFlag(
 export function registerOnboardCommand(program: Command) {
   program
     .command("onboard")
-    .description("Interactive wizard to set up the gateway, workspace, and skills")
+    .description(t("cli.cmd.onboard.desc"))
     .addHelpText(
       "after",
       () =>
         `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/onboard", "docs.openclaw.ai/cli/onboard")}\n`,
     )
-    .option("--workspace <dir>", "Agent workspace directory (default: ~/.openclaw/workspace)")
-    .option("--reset", "Reset config + credentials + sessions + workspace before running wizard")
-    .option("--non-interactive", "Run without prompts", false)
+    .option("--workspace <dir>", t("cli.cmd.onboard.workspaceOpt"))
+    .option("--reset", t("cli.cmd.onboard.resetOpt"))
+    .option("--non-interactive", t("cli.cmd.onboard.nonInteractiveOpt"), false)
     .option(
       "--accept-risk",
-      "Acknowledge that agents are powerful and full system access is risky (required for --non-interactive)",
+      t("cli.cmd.onboard.acceptRiskOpt"),
       false,
     )
-    .option("--flow <flow>", "Wizard flow: quickstart|advanced|manual")
-    .option("--mode <mode>", "Wizard mode: local|remote")
+    .option("--flow <flow>", t("cli.cmd.onboard.flowOpt"))
+    .option("--mode <mode>", t("cli.cmd.onboard.modeOpt"))
     .option(
       "--auth-choice <choice>",
       "Auth: setup-token|token|chutes|openai-codex|openai-api-key|xai-api-key|qianfan-api-key|openrouter-api-key|ai-gateway-api-key|cloudflare-ai-gateway-api-key|moonshot-api-key|moonshot-api-key-cn|kimi-code-api-key|synthetic-api-key|venice-api-key|gemini-api-key|zai-api-key|xiaomi-api-key|apiKey|minimax-api|minimax-api-lightning|opencode-zen|skip",
@@ -64,49 +65,49 @@ export function registerOnboardCommand(program: Command) {
       "--token-provider <id>",
       "Token provider id (non-interactive; used with --auth-choice token)",
     )
-    .option("--token <token>", "Token value (non-interactive; used with --auth-choice token)")
+    .option("--token <token>", t("cli.cmd.onboard.tokenOpt"))
     .option(
       "--token-profile-id <id>",
       "Auth profile id (non-interactive; default: <provider>:manual)",
     )
-    .option("--token-expires-in <duration>", "Optional token expiry duration (e.g. 365d, 12h)")
-    .option("--anthropic-api-key <key>", "Anthropic API key")
-    .option("--openai-api-key <key>", "OpenAI API key")
-    .option("--openrouter-api-key <key>", "OpenRouter API key")
-    .option("--ai-gateway-api-key <key>", "Vercel AI Gateway API key")
-    .option("--cloudflare-ai-gateway-account-id <id>", "Cloudflare Account ID")
-    .option("--cloudflare-ai-gateway-gateway-id <id>", "Cloudflare AI Gateway ID")
-    .option("--cloudflare-ai-gateway-api-key <key>", "Cloudflare AI Gateway API key")
-    .option("--moonshot-api-key <key>", "Moonshot API key")
-    .option("--kimi-code-api-key <key>", "Kimi Coding API key")
-    .option("--gemini-api-key <key>", "Gemini API key")
-    .option("--zai-api-key <key>", "Z.AI API key")
-    .option("--xiaomi-api-key <key>", "Xiaomi API key")
-    .option("--minimax-api-key <key>", "MiniMax API key")
-    .option("--synthetic-api-key <key>", "Synthetic API key")
-    .option("--venice-api-key <key>", "Venice API key")
-    .option("--opencode-zen-api-key <key>", "OpenCode Zen API key")
-    .option("--xai-api-key <key>", "xAI API key")
-    .option("--qianfan-api-key <key>", "QIANFAN API key")
-    .option("--gateway-port <port>", "Gateway port")
-    .option("--gateway-bind <mode>", "Gateway bind: loopback|tailnet|lan|auto|custom")
-    .option("--gateway-auth <mode>", "Gateway auth: token|password")
-    .option("--gateway-token <token>", "Gateway token (token auth)")
-    .option("--gateway-password <password>", "Gateway password (password auth)")
-    .option("--remote-url <url>", "Remote Gateway WebSocket URL")
-    .option("--remote-token <token>", "Remote Gateway token (optional)")
-    .option("--tailscale <mode>", "Tailscale: off|serve|funnel")
-    .option("--tailscale-reset-on-exit", "Reset tailscale serve/funnel on exit")
-    .option("--install-daemon", "Install gateway service")
-    .option("--no-install-daemon", "Skip gateway service install")
-    .option("--skip-daemon", "Skip gateway service install")
-    .option("--daemon-runtime <runtime>", "Daemon runtime: node|bun")
-    .option("--skip-channels", "Skip channel setup")
-    .option("--skip-skills", "Skip skills setup")
-    .option("--skip-health", "Skip health check")
-    .option("--skip-ui", "Skip Control UI/TUI prompts")
-    .option("--node-manager <name>", "Node manager for skills: npm|pnpm|bun")
-    .option("--json", "Output JSON summary", false)
+    .option("--token-expires-in <duration>", t("cli.cmd.onboard.tokenExpiresInOpt"))
+    .option("--anthropic-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "Anthropic" }))
+    .option("--openai-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "OpenAI" }))
+    .option("--openrouter-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "OpenRouter" }))
+    .option("--ai-gateway-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "Vercel AI Gateway" }))
+    .option("--cloudflare-ai-gateway-account-id <id>", t("cli.cmd.onboard.cloudflareAccountIdOpt"))
+    .option("--cloudflare-ai-gateway-gateway-id <id>", t("cli.cmd.onboard.cloudflareGatewayIdOpt"))
+    .option("--cloudflare-ai-gateway-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "Cloudflare AI Gateway" }))
+    .option("--moonshot-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "Moonshot" }))
+    .option("--kimi-code-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "Kimi Coding" }))
+    .option("--gemini-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "Gemini" }))
+    .option("--zai-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "Z.AI" }))
+    .option("--xiaomi-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "Xiaomi" }))
+    .option("--minimax-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "MiniMax" }))
+    .option("--synthetic-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "Synthetic" }))
+    .option("--venice-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "Venice" }))
+    .option("--opencode-zen-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "OpenCode Zen" }))
+    .option("--xai-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "xAI" }))
+    .option("--qianfan-api-key <key>", t("cli.cmd.onboard.apiKeyOpt", { provider: "QIANFAN" }))
+    .option("--gateway-port <port>", t("cli.cmd.onboard.gatewayPortOpt"))
+    .option("--gateway-bind <mode>", t("cli.cmd.onboard.gatewayBindOpt"))
+    .option("--gateway-auth <mode>", t("cli.cmd.onboard.gatewayAuthOpt"))
+    .option("--gateway-token <token>", t("cli.cmd.onboard.gatewayTokenOpt"))
+    .option("--gateway-password <password>", t("cli.cmd.onboard.gatewayPasswordOpt"))
+    .option("--remote-url <url>", t("cli.cmd.onboard.remoteUrlOpt"))
+    .option("--remote-token <token>", t("cli.cmd.onboard.remoteTokenOpt"))
+    .option("--tailscale <mode>", t("cli.cmd.onboard.tailscaleOpt"))
+    .option("--tailscale-reset-on-exit", t("cli.cmd.onboard.tailscaleResetOpt"))
+    .option("--install-daemon", t("cli.cmd.onboard.installDaemonOpt"))
+    .option("--no-install-daemon", t("cli.cmd.onboard.skipDaemonOpt"))
+    .option("--skip-daemon", t("cli.cmd.onboard.skipDaemonOpt"))
+    .option("--daemon-runtime <runtime>", t("cli.cmd.onboard.daemonRuntimeOpt"))
+    .option("--skip-channels", t("cli.cmd.onboard.skipChannelsOpt"))
+    .option("--skip-skills", t("cli.cmd.onboard.skipSkillsOpt"))
+    .option("--skip-health", t("cli.cmd.onboard.skipHealthOpt"))
+    .option("--skip-ui", t("cli.cmd.onboard.skipUiOpt"))
+    .option("--node-manager <name>", t("cli.cmd.onboard.nodeManagerOpt"))
+    .option("--json", t("cli.cmd.common.jsonSummaryOpt"), false)
     .action(async (opts, command) => {
       await runCommandWithRuntime(defaultRuntime, async () => {
         const installDaemon = resolveInstallDaemonFlag(command, {

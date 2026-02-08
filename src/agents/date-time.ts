@@ -1,4 +1,5 @@
 import { execSync } from "node:child_process";
+import { getLocale } from "../i18n/index.js";
 
 export type TimeFormatPreference = "auto" | "12" | "24";
 export type ResolvedTimeFormat = "12" | "24";
@@ -159,7 +160,22 @@ export function formatUserTime(
   format: ResolvedTimeFormat,
 ): string | undefined {
   const use24Hour = format === "24";
+  const locale = getLocale();
   try {
+    // For non-English locales, use Intl.DateTimeFormat directly for natural formatting
+    if (locale !== "en") {
+      return new Intl.DateTimeFormat(locale, {
+        timeZone,
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: use24Hour ? "2-digit" : "numeric",
+        minute: "2-digit",
+        hourCycle: use24Hour ? "h23" : "h12",
+      }).format(date);
+    }
+    // English: use the custom ordinal format
     const parts = new Intl.DateTimeFormat("en-US", {
       timeZone,
       weekday: "long",

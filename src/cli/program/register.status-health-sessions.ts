@@ -3,6 +3,7 @@ import { healthCommand } from "../../commands/health.js";
 import { sessionsCommand } from "../../commands/sessions.js";
 import { statusCommand } from "../../commands/status.js";
 import { setVerbose } from "../../globals.js";
+import { t } from "../../i18n/index.js";
 import { defaultRuntime } from "../../runtime.js";
 import { formatDocsLink } from "../../terminal/links.js";
 import { theme } from "../../terminal/theme.js";
@@ -27,14 +28,14 @@ function parseTimeoutMs(timeout: unknown): number | null | undefined {
 export function registerStatusHealthSessionsCommands(program: Command) {
   program
     .command("status")
-    .description("Show channel health and recent session recipients")
-    .option("--json", "Output JSON instead of text", false)
-    .option("--all", "Full diagnosis (read-only, pasteable)", false)
-    .option("--usage", "Show model provider usage/quota snapshots", false)
-    .option("--deep", "Probe channels (WhatsApp Web + Telegram + Discord + Slack + Signal)", false)
-    .option("--timeout <ms>", "Probe timeout in milliseconds", "10000")
-    .option("--verbose", "Verbose logging", false)
-    .option("--debug", "Alias for --verbose", false)
+    .description(t("cli.cmd.status.desc"))
+    .option("--json", t("cli.cmd.status.jsonOpt"), false)
+    .option("--all", t("cli.cmd.status.allOpt"), false)
+    .option("--usage", t("cli.cmd.status.usageOpt"), false)
+    .option("--deep", t("cli.cmd.status.deepOpt"), false)
+    .option("--timeout <ms>", t("cli.cmd.status.timeoutOpt"), "10000")
+    .option("--verbose", t("cli.cmd.status.verboseOpt"), false)
+    .option("--debug", t("cli.cmd.status.debugOpt"), false)
     .addHelpText(
       "after",
       () =>
@@ -79,11 +80,11 @@ export function registerStatusHealthSessionsCommands(program: Command) {
 
   program
     .command("health")
-    .description("Fetch health from the running gateway")
-    .option("--json", "Output JSON instead of text", false)
-    .option("--timeout <ms>", "Connection timeout in milliseconds", "10000")
-    .option("--verbose", "Verbose logging", false)
-    .option("--debug", "Alias for --verbose", false)
+    .description(t("cli.cmd.health.desc"))
+    .option("--json", t("cli.cmd.health.jsonOpt"), false)
+    .option("--timeout <ms>", t("cli.cmd.health.timeoutOpt"), "10000")
+    .option("--verbose", t("cli.cmd.status.verboseOpt"), false)
+    .option("--debug", t("cli.cmd.status.debugOpt"), false)
     .addHelpText(
       "after",
       () =>
@@ -110,11 +111,11 @@ export function registerStatusHealthSessionsCommands(program: Command) {
 
   program
     .command("sessions")
-    .description("List stored conversation sessions")
-    .option("--json", "Output as JSON", false)
-    .option("--verbose", "Verbose logging", false)
-    .option("--store <path>", "Path to session store (default: resolved from config)")
-    .option("--active <minutes>", "Only show sessions updated within the past N minutes")
+    .description(t("cli.cmd.sessions.desc"))
+    .option("--json", t("cli.cmd.sessions.jsonOpt"), false)
+    .option("--verbose", t("cli.cmd.status.verboseOpt"), false)
+    .option("--store <path>", t("cli.cmd.sessions.storeOpt"))
+    .option("--active <minutes>", t("cli.cmd.sessions.activeOpt"))
     .addHelpText(
       "after",
       () =>

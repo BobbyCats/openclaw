@@ -2,6 +2,7 @@ import type { MemoryProviderStatus } from "../memory/types.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { withProgress } from "../cli/progress.js";
 import { loadConfig } from "../config/config.js";
+import { t } from "../i18n/index.js";
 import { buildGatewayConnectionDetails, callGateway } from "../gateway/call.js";
 import { normalizeControlUiBasePath } from "../gateway/control-ui-shared.js";
 import { probeGateway } from "../gateway/probe.js";
@@ -69,7 +70,7 @@ export async function scanStatus(
 ): Promise<StatusScanResult> {
   return await withProgress(
     {
-      label: "Scanning status…",
+      label: t("cli.status.scanning"),
       total: 10,
       enabled: opts.json !== true,
     },

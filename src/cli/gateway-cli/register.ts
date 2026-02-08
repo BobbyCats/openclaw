@@ -4,6 +4,7 @@ import type { GatewayDiscoverOpts } from "./discover.js";
 import { gatewayStatusCommand } from "../../commands/gateway-status.js";
 import { formatHealthChannelLines, type HealthSummary } from "../../commands/health.js";
 import { loadConfig } from "../../config/config.js";
+import { t } from "../../i18n/index.js";
 import { discoverGatewayBeacons } from "../../infra/bonjour-discovery.js";
 import { resolveWideAreaDiscoveryDomain } from "../../infra/widearea-dns.js";
 import { defaultRuntime } from "../../runtime.js";
@@ -122,7 +123,7 @@ export function registerGatewayCli(program: Command) {
   const gateway = addGatewayRunCommand(
     program
       .command("gateway")
-      .description("Run the WebSocket Gateway")
+      .description(t("cli.cmd.gateway.desc"))
       .addHelpText(
         "after",
         () =>
@@ -131,19 +132,19 @@ export function registerGatewayCli(program: Command) {
   );
 
   addGatewayRunCommand(
-    gateway.command("run").description("Run the WebSocket Gateway (foreground)"),
+    gateway.command("run").description(t("cli.cmd.gateway.run")),
   );
 
   gateway
     .command("status")
-    .description("Show gateway service status + probe the Gateway")
-    .option("--url <url>", "Gateway WebSocket URL (defaults to config/remote/local)")
-    .option("--token <token>", "Gateway token (if required)")
-    .option("--password <password>", "Gateway password (password auth)")
-    .option("--timeout <ms>", "Timeout in ms", "10000")
-    .option("--no-probe", "Skip RPC probe")
-    .option("--deep", "Scan system-level services", false)
-    .option("--json", "Output JSON", false)
+    .description(t("cli.cmd.gateway.status"))
+    .option("--url <url>", t("cli.cmd.gateway.status.urlOpt"))
+    .option("--token <token>", t("cli.cmd.gateway.status.tokenOpt"))
+    .option("--password <password>", t("cli.cmd.gateway.status.passwordOpt"))
+    .option("--timeout <ms>", t("cli.cmd.gateway.status.timeoutOpt"), "10000")
+    .option("--no-probe", t("cli.cmd.gateway.status.noProbeOpt"))
+    .option("--deep", t("cli.cmd.gateway.status.deepOpt"), false)
+    .option("--json", t("cli.cmd.common.jsonOpt"), false)
     .action(async (opts) => {
       await runDaemonStatus({
         rpc: opts,
@@ -155,44 +156,44 @@ export function registerGatewayCli(program: Command) {
 
   gateway
     .command("install")
-    .description("Install the Gateway service (launchd/systemd/schtasks)")
-    .option("--port <port>", "Gateway port")
-    .option("--runtime <runtime>", "Daemon runtime (node|bun). Default: node")
-    .option("--token <token>", "Gateway token (token auth)")
-    .option("--force", "Reinstall/overwrite if already installed", false)
-    .option("--json", "Output JSON", false)
+    .description(t("cli.cmd.gateway.install"))
+    .option("--port <port>", t("cli.cmd.gateway.install.portOpt"))
+    .option("--runtime <runtime>", t("cli.cmd.gateway.install.runtimeOpt"))
+    .option("--token <token>", t("cli.cmd.gateway.install.tokenOpt"))
+    .option("--force", t("cli.cmd.gateway.install.forceOpt"), false)
+    .option("--json", t("cli.cmd.common.jsonOpt"), false)
     .action(async (opts) => {
       await runDaemonInstall(opts);
     });
 
   gateway
     .command("uninstall")
-    .description("Uninstall the Gateway service (launchd/systemd/schtasks)")
-    .option("--json", "Output JSON", false)
+    .description(t("cli.cmd.gateway.uninstall"))
+    .option("--json", t("cli.cmd.common.jsonOpt"), false)
     .action(async (opts) => {
       await runDaemonUninstall(opts);
     });
 
   gateway
     .command("start")
-    .description("Start the Gateway service (launchd/systemd/schtasks)")
-    .option("--json", "Output JSON", false)
+    .description(t("cli.cmd.gateway.start"))
+    .option("--json", t("cli.cmd.common.jsonOpt"), false)
     .action(async (opts) => {
       await runDaemonStart(opts);
     });
 
   gateway
     .command("stop")
-    .description("Stop the Gateway service (launchd/systemd/schtasks)")
-    .option("--json", "Output JSON", false)
+    .description(t("cli.cmd.gateway.stop"))
+    .option("--json", t("cli.cmd.common.jsonOpt"), false)
     .action(async (opts) => {
       await runDaemonStop(opts);
     });
 
   gateway
     .command("restart")
-    .description("Restart the Gateway service (launchd/systemd/schtasks)")
-    .option("--json", "Output JSON", false)
+    .description(t("cli.cmd.gateway.restart"))
+    .option("--json", t("cli.cmd.common.jsonOpt"), false)
     .action(async (opts) => {
       await runDaemonRestart(opts);
     });
@@ -200,9 +201,9 @@ export function registerGatewayCli(program: Command) {
   gatewayCallOpts(
     gateway
       .command("call")
-      .description("Call a Gateway method")
+      .description(t("cli.cmd.gateway.call"))
       .argument("<method>", "Method name (health/status/system-presence/cron.*)")
-      .option("--params <json>", "JSON object string for params", "{}")
+      .option("--params <json>", t("cli.cmd.gateway.call.paramsOpt"), "{}")
       .action(async (method, opts) => {
         await runGatewayCommand(async () => {
           const params = JSON.parse(String(opts.params ?? "{}"));
@@ -223,8 +224,8 @@ export function registerGatewayCli(program: Command) {
   gatewayCallOpts(
     gateway
       .command("usage-cost")
-      .description("Fetch usage cost summary from session logs")
-      .option("--days <days>", "Number of days to include", "30")
+      .description(t("cli.cmd.gateway.usageCost"))
+      .option("--days <days>", t("cli.cmd.gateway.usageCost.daysOpt"), "30")
       .action(async (opts) => {
         await runGatewayCommand(async () => {
           const days = parseDaysOption(opts.days);
@@ -245,7 +246,7 @@ export function registerGatewayCli(program: Command) {
   gatewayCallOpts(
     gateway
       .command("health")
-      .description("Fetch Gateway health")
+      .description(t("cli.cmd.gateway.health"))
       .action(async (opts) => {
         await runGatewayCommand(async () => {
           const result = await callGatewayCli("health", opts);
@@ -271,15 +272,15 @@ export function registerGatewayCli(program: Command) {
 
   gateway
     .command("probe")
-    .description("Show gateway reachability + discovery + health + status summary (local + remote)")
-    .option("--url <url>", "Explicit Gateway WebSocket URL (still probes localhost)")
-    .option("--ssh <target>", "SSH target for remote gateway tunnel (user@host or user@host:port)")
-    .option("--ssh-identity <path>", "SSH identity file path")
-    .option("--ssh-auto", "Try to derive an SSH target from Bonjour discovery", false)
-    .option("--token <token>", "Gateway token (applies to all probes)")
-    .option("--password <password>", "Gateway password (applies to all probes)")
-    .option("--timeout <ms>", "Overall probe budget in ms", "3000")
-    .option("--json", "Output JSON", false)
+    .description(t("cli.cmd.gateway.probe"))
+    .option("--url <url>", t("cli.cmd.gateway.probe.urlOpt"))
+    .option("--ssh <target>", t("cli.cmd.gateway.probe.sshOpt"))
+    .option("--ssh-identity <path>", t("cli.cmd.gateway.probe.sshIdentityOpt"))
+    .option("--ssh-auto", t("cli.cmd.gateway.probe.sshAutoOpt"), false)
+    .option("--token <token>", t("cli.cmd.gateway.probe.tokenOpt"))
+    .option("--password <password>", t("cli.cmd.gateway.probe.passwordOpt"))
+    .option("--timeout <ms>", t("cli.cmd.gateway.probe.timeoutOpt"), "3000")
+    .option("--json", t("cli.cmd.common.jsonOpt"), false)
     .action(async (opts) => {
       await runGatewayCommand(async () => {
         await gatewayStatusCommand(opts, defaultRuntime);
@@ -288,9 +289,9 @@ export function registerGatewayCli(program: Command) {
 
   gateway
     .command("discover")
-    .description("Discover gateways via Bonjour (local + wide-area if configured)")
-    .option("--timeout <ms>", "Per-command timeout in ms", "2000")
-    .option("--json", "Output JSON", false)
+    .description(t("cli.cmd.gateway.discover"))
+    .option("--timeout <ms>", t("cli.cmd.gateway.discover.timeoutOpt"), "2000")
+    .option("--json", t("cli.cmd.common.jsonOpt"), false)
     .action(async (opts: GatewayDiscoverOpts) => {
       await runGatewayCommand(async () => {
         const cfg = loadConfig();

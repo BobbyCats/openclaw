@@ -5,6 +5,7 @@ import { installSkill } from "../agents/skills-install.js";
 import { buildWorkspaceSkillStatus } from "../agents/skills-status.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { detectBinary, resolveNodeManagerOptions } from "./onboard-helpers.js";
+import { t, tSkillDesc } from "../i18n/index.js";
 
 function summarizeInstallFailure(message: string): string | undefined {
   const cleaned = message.replace(/^Install failed(?:\s*\([^)]*\))?\s*:?\s*/i, "").trim();
@@ -16,10 +17,11 @@ function summarizeInstallFailure(message: string): string | undefined {
 }
 
 function formatSkillHint(skill: {
+  skillKey: string;
   description?: string;
   install: Array<{ label: string }>;
 }): string {
-  const desc = skill.description?.trim();
+  const desc = tSkillDesc(skill.skillKey, skill.description ?? "").trim() || undefined;
   const installLabel = skill.install[0]?.label?.trim();
   const combined = desc && installLabel ? `${desc} — ${installLabel}` : desc || installLabel;
   if (!combined) {
@@ -72,7 +74,7 @@ export async function setupSkills(
   );
 
   const shouldConfigure = await prompter.confirm({
-    message: "Configure skills now? (recommended)",
+    message: t("cli.onboard.configureSkills"),
     initialValue: true,
   });
   if (!shouldConfigure) {
@@ -103,7 +105,7 @@ export async function setupSkills(
   }
 
   const nodeManager = (await prompter.select({
-    message: "Preferred node manager for skill installs",
+    message: t("cli.onboard.preferredNodeManager"),
     options: resolveNodeManagerOptions(),
   })) as "npm" | "pnpm" | "bun";
 

@@ -20,6 +20,7 @@ import {
 } from "../channels/registry.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { isChannelConfigured } from "../config/plugin-auto-enable.js";
+import { t } from "../i18n/index.js";
 import { enablePluginInConfig } from "../plugins/enable.js";
 import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "../routing/session-key.js";
 import { formatDocsLink } from "../terminal/links.js";
@@ -233,7 +234,7 @@ async function maybeConfigureDmPolicies(params: {
   }
 
   const wants = await prompter.confirm({
-    message: "Configure DM access policies now? (default: pairing)",
+    message: t("cli.onboard.configureDm"),
     initialValue: false,
   });
   if (!wants) {
@@ -308,7 +309,7 @@ export async function setupChannels(
   const shouldConfigure = options?.skipConfirm
     ? true
     : await prompter.confirm({
-        message: "Configure chat channels now?",
+        message: t("cli.onboard.configureChannels"),
         initialValue: true,
       });
   if (!shouldConfigure) {
@@ -610,7 +611,7 @@ export async function setupChannels(
   if (options?.quickstartDefaults) {
     const { entries } = getChannelEntries();
     const choice = (await prompter.select({
-      message: "Select channel (QuickStart)",
+      message: t("cli.onboard.selectChannel"),
       options: [
         ...buildSelectionOptions(entries),
         {

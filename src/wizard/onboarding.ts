@@ -10,6 +10,7 @@ import type { QuickstartGatewayDefaults, WizardFlow } from "./onboarding.types.j
 import { ensureAuthProfileStore } from "../agents/auth-profiles.js";
 import { listChannelPlugins } from "../channels/plugins/index.js";
 import { formatCliCommand } from "../cli/command-format.js";
+import { t } from "../i18n/index.js";
 import { promptAuthChoiceGrouped } from "../commands/auth-choice-prompt.js";
 import {
   applyAuthChoice,
@@ -92,7 +93,7 @@ export async function runOnboardingWizard(
   prompter: WizardPrompter,
 ) {
   printWizardHeader(runtime);
-  await prompter.intro("OpenClaw onboarding");
+  await prompter.intro(t("cli.onboard.welcome"));
   await requireRiskAcknowledgement({ opts, prompter });
 
   const snapshot = await readConfigFileSnapshot();

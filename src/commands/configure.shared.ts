@@ -6,6 +6,7 @@ import {
   text as clackText,
 } from "@clack/prompts";
 import { stylePromptHint, stylePromptMessage, stylePromptTitle } from "../terminal/prompt-style.js";
+import { t } from "../i18n/index.js";
 
 export const CONFIGURE_WIZARD_SECTIONS = [
   "workspace",
@@ -32,25 +33,25 @@ export const CONFIGURE_SECTION_OPTIONS: Array<{
   label: string;
   hint: string;
 }> = [
-  { value: "workspace", label: "Workspace", hint: "Set workspace + sessions" },
-  { value: "model", label: "Model", hint: "Pick provider + credentials" },
-  { value: "web", label: "Web tools", hint: "Configure Brave search + fetch" },
-  { value: "gateway", label: "Gateway", hint: "Port, bind, auth, tailscale" },
+  { value: "workspace", label: t("cli.configure.workspace"), hint: t("cli.configure.workspaceHint") },
+  { value: "model", label: t("cli.configure.model"), hint: t("cli.configure.modelHint") },
+  { value: "web", label: t("cli.configure.web"), hint: t("cli.configure.webHint") },
+  { value: "gateway", label: t("cli.configure.gateway"), hint: t("cli.configure.gatewayHint") },
   {
     value: "daemon",
-    label: "Daemon",
-    hint: "Install/manage the background service",
+    label: t("cli.configure.daemon"),
+    hint: t("cli.configure.daemonHint"),
   },
   {
     value: "channels",
-    label: "Channels",
-    hint: "Link WhatsApp/Telegram/etc and defaults",
+    label: t("cli.configure.channels"),
+    hint: t("cli.configure.channelsHint"),
   },
-  { value: "skills", label: "Skills", hint: "Install/enable workspace skills" },
+  { value: "skills", label: t("cli.configure.skills"), hint: t("cli.configure.skillsHint") },
   {
     value: "health",
-    label: "Health check",
-    hint: "Run gateway + channel checks",
+    label: t("cli.configure.healthCheck"),
+    hint: t("cli.configure.healthCheckHint"),
   },
 ];
 

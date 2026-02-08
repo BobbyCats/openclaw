@@ -4,6 +4,7 @@ import { buildWorkspaceSkillStatus } from "../agents/skills-status.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { withProgress } from "../cli/progress.js";
 import { loadConfig, readConfigFileSnapshot, resolveGatewayPort } from "../config/config.js";
+import { t } from "../i18n/index.js";
 import { readLastGatewayErrorLine } from "../daemon/diagnostics.js";
 import { resolveNodeService } from "../daemon/node-service.js";
 import { resolveGatewayService } from "../daemon/service.js";
@@ -36,7 +37,7 @@ export async function statusAllCommand(
   runtime: RuntimeEnv,
   opts?: { timeoutMs?: number },
 ): Promise<void> {
-  await withProgress({ label: "Scanning status --all…", total: 11 }, async (progress) => {
+  await withProgress({ label: t("cli.status.scanning"), total: 11 }, async (progress) => {
     progress.setLabel("Loading config…");
     const cfg = loadConfig();
     const osSummary = resolveOsSummary();

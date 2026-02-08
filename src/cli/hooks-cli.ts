@@ -25,6 +25,7 @@ import { formatDocsLink } from "../terminal/links.js";
 import { renderTable } from "../terminal/table.js";
 import { theme } from "../terminal/theme.js";
 import { resolveUserPath, shortenHomePath } from "../utils.js";
+import { tHookDesc } from "../i18n/index.js";
 import { formatCliCommand } from "./command-format.js";
 
 export type HooksListOptions = {
@@ -159,7 +160,7 @@ export function formatHooksList(report: HookStatusReport, opts: HooksListOptions
     return {
       Status: formatHookStatus(hook),
       Hook: formatHookName(hook),
-      Description: theme.muted(hook.description),
+      Description: theme.muted(tHookDesc(hook.hookKey, hook.description)),
       Source: formatHookSource(hook),
       Missing: missing ? theme.warn(missing) : "",
     };
@@ -220,7 +221,7 @@ export function formatHookInfo(
 
   lines.push(`${emoji} ${theme.heading(hook.name)} ${status}`);
   lines.push("");
-  lines.push(hook.description);
+  lines.push(tHookDesc(hook.hookKey, hook.description));
   lines.push("");
 
   // Details

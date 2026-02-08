@@ -12,6 +12,7 @@ import { resolveGatewayService } from "../daemon/service.js";
 import { stylePromptHint, stylePromptMessage, stylePromptTitle } from "../terminal/prompt-style.js";
 import { resolveHomeDir } from "../utils.js";
 import { collectWorkspaceDirs, isPathWithin, removePath } from "./cleanup-utils.js";
+import { t } from "../i18n/index.js";
 
 type UninstallScope = "service" | "state" | "workspace" | "app";
 
@@ -113,18 +114,18 @@ export async function uninstallCommand(runtime: RuntimeEnv, opts: UninstallOptio
       return;
     }
     const selection = await multiselectStyled<UninstallScope>({
-      message: "Uninstall which components?",
+      message: t("cli.uninstall.which"),
       options: [
         {
           value: "service",
-          label: "Gateway service",
+          label: t("cli.uninstall.gatewayService"),
           hint: "launchd / systemd / schtasks",
         },
-        { value: "state", label: "State + config", hint: "~/.openclaw" },
-        { value: "workspace", label: "Workspace", hint: "agent files" },
+        { value: "state", label: t("cli.uninstall.stateConfig"), hint: "~/.openclaw" },
+        { value: "workspace", label: t("cli.uninstall.workspace"), hint: "agent files" },
         {
           value: "app",
-          label: "macOS app",
+          label: t("cli.uninstall.macApp"),
           hint: "/Applications/OpenClaw.app",
         },
       ],

@@ -6,6 +6,7 @@ import { resolveChannelDefaultAccountId } from "../channels/plugins/helpers.js";
 import { getChannelPlugin, listChannelPlugins } from "../channels/plugins/index.js";
 import { withProgress } from "../cli/progress.js";
 import { loadConfig } from "../config/config.js";
+import { t } from "../i18n/index.js";
 import { loadSessionStore, resolveStorePath } from "../config/sessions.js";
 import { buildGatewayConnectionDetails, callGateway } from "../gateway/call.js";
 import { info } from "../globals.js";
@@ -567,7 +568,7 @@ export async function healthCommand(
   // Always query the running gateway; do not open a direct Baileys socket here.
   const summary = await withProgress(
     {
-      label: "Checking gateway health…",
+      label: t("cli.status.checkingHealth"),
       indeterminate: true,
       enabled: opts.json !== true,
     },

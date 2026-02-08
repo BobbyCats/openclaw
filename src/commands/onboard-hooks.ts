@@ -4,6 +4,7 @@ import type { WizardPrompter } from "../wizard/prompts.js";
 import { resolveAgentWorkspaceDir, resolveDefaultAgentId } from "../agents/agent-scope.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { buildWorkspaceHookStatus } from "../hooks/hooks-status.js";
+import { tHookDesc } from "../i18n/index.js";
 
 export async function setupInternalHooks(
   cfg: OpenClawConfig,
@@ -42,7 +43,7 @@ export async function setupInternalHooks(
       ...eligibleHooks.map((hook) => ({
         value: hook.name,
         label: `${hook.emoji ?? "🔗"} ${hook.name}`,
-        hint: hook.description,
+        hint: tHookDesc(hook.hookKey, hook.description),
       })),
     ],
   });

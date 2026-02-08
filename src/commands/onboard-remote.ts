@@ -4,6 +4,7 @@ import type { WizardPrompter } from "../wizard/prompts.js";
 import { discoverGatewayBeacons } from "../infra/bonjour-discovery.js";
 import { resolveWideAreaDiscoveryDomain } from "../infra/widearea-dns.js";
 import { detectBinary } from "./onboard-helpers.js";
+import { t } from "../i18n/index.js";
 
 const DEFAULT_GATEWAY_URL = "ws://127.0.0.1:18789";
 
@@ -37,7 +38,7 @@ export async function promptRemoteGatewayConfig(
   const hasBonjourTool = (await detectBinary("dns-sd")) || (await detectBinary("avahi-browse"));
   const wantsDiscover = hasBonjourTool
     ? await prompter.confirm({
-        message: "Discover gateway on LAN (Bonjour)?",
+        message: t("cli.onboard.discoverGateway"),
         initialValue: true,
       })
     : false;
@@ -62,7 +63,7 @@ export async function promptRemoteGatewayConfig(
 
     if (beacons.length > 0) {
       const selection = await prompter.select({
-        message: "Select gateway",
+        message: t("cli.onboard.selectGateway"),
         options: [
           ...beacons.map((beacon, index) => ({
             value: String(index),
@@ -111,7 +112,7 @@ export async function promptRemoteGatewayConfig(
   }
 
   const urlInput = await prompter.text({
-    message: "Gateway WebSocket URL",
+    message: t("cli.onboard.gatewayWsUrl"),
     initialValue: suggestedUrl,
     validate: (value) =>
       String(value).trim().startsWith("ws://") || String(value).trim().startsWith("wss://")
@@ -121,7 +122,7 @@ export async function promptRemoteGatewayConfig(
   const url = ensureWsUrl(String(urlInput));
 
   const authChoice = await prompter.select({
-    message: "Gateway auth",
+    message: t("cli.onboard.gatewayAuth"),
     options: [
       { value: "token", label: "Token (recommended)" },
       { value: "off", label: "No auth" },

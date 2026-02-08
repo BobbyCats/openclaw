@@ -2,6 +2,7 @@ import type { HeartbeatEventPayload } from "../infra/heartbeat-events.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { withProgress } from "../cli/progress.js";
+import { t } from "../i18n/index.js";
 import { resolveGatewayPort } from "../config/config.js";
 import { buildGatewayConnectionDetails, callGateway } from "../gateway/call.js";
 import { info } from "../globals.js";
@@ -109,7 +110,7 @@ export async function statusCommand(
   const health: HealthSummary | undefined = opts.deep
     ? await withProgress(
         {
-          label: "Checking gateway health…",
+          label: t("cli.status.checkingHealth"),
           indeterminate: true,
           enabled: opts.json !== true,
         },

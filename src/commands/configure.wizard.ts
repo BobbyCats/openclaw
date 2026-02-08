@@ -5,6 +5,7 @@ import type {
   ConfigureWizardParams,
   WizardSection,
 } from "./configure.shared.js";
+import { t } from "../i18n/index.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { readConfigFileSnapshot, resolveGatewayPort, writeConfigFile } from "../config/config.js";
 import { logConfigUpdated } from "../config/logging.js";
@@ -51,7 +52,7 @@ async function promptConfigureSection(
 ): Promise<ConfigureSectionChoice> {
   return guardCancel(
     await select<ConfigureSectionChoice>({
-      message: "Select sections to configure",
+      message: t("cli.configure.selectSections"),
       options: [
         ...CONFIGURE_SECTION_OPTIONS,
         {
@@ -584,7 +585,7 @@ export async function runConfigureWizard(
       "Control UI",
     );
 
-    outro("Configure complete.");
+    outro(t("cli.complete"));
   } catch (err) {
     if (err instanceof WizardCancelledError) {
       runtime.exit(0);

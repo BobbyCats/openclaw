@@ -6,6 +6,7 @@ import { note } from "../terminal/note.js";
 import { buildGatewayAuthConfig } from "./configure.gateway-auth.js";
 import { confirm, select, text } from "./configure.shared.js";
 import { guardCancel, normalizeGatewayTokenInput, randomToken } from "./onboard-helpers.js";
+import { t } from "../i18n/index.js";
 
 type GatewayAuthChoice = "token" | "password";
 
@@ -94,7 +95,7 @@ export async function promptGatewayConfig(
 
   let authMode = guardCancel(
     await select({
-      message: "Gateway auth",
+      message: t("cli.onboard.gatewayAuth"),
       options: [
         { value: "token", label: "Token", hint: "Recommended default" },
         { value: "password", label: "Password" },

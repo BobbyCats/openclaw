@@ -11,6 +11,7 @@ import { formatDocsLink } from "../terminal/links.js";
 import { renderTable } from "../terminal/table.js";
 import { theme } from "../terminal/theme.js";
 import { shortenHomePath } from "../utils.js";
+import { tSkillDesc } from "../i18n/index.js";
 import { formatCliCommand } from "./command-format.js";
 
 export type SkillsListOptions = {
@@ -113,7 +114,7 @@ export function formatSkillsList(report: SkillStatusReport, opts: SkillsListOpti
     return {
       Status: formatSkillStatus(skill),
       Skill: formatSkillName(skill),
-      Description: theme.muted(skill.description),
+      Description: theme.muted(tSkillDesc(skill.skillKey, skill.description)),
       Source: skill.source ?? "",
       Missing: missing ? theme.warn(missing) : "",
     };
@@ -180,7 +181,7 @@ export function formatSkillInfo(
 
   lines.push(`${emoji} ${theme.heading(skill.name)} ${status}`);
   lines.push("");
-  lines.push(skill.description);
+  lines.push(tSkillDesc(skill.skillKey, skill.description));
   lines.push("");
 
   // Details
