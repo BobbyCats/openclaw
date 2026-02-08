@@ -1,10 +1,11 @@
 import { stripReasoningTagsFromText } from "../../../src/shared/text/reasoning-tags.js";
+import { getLocale } from "./i18n.js";
 
 export function formatMs(ms?: number | null): string {
   if (!ms && ms !== 0) {
     return "n/a";
   }
-  return new Date(ms).toLocaleString();
+  return new Date(ms).toLocaleString(getLocale());
 }
 
 export function formatAgo(ms?: number | null): string {
@@ -13,21 +14,25 @@ export function formatAgo(ms?: number | null): string {
   }
   const diff = Date.now() - ms;
   const absDiff = Math.abs(diff);
-  const suffix = diff < 0 ? "from now" : "ago";
+  const isZhCN = getLocale() === "zh-CN";
+  const suffix = diff < 0 ? (isZhCN ? "后" : "from now") : isZhCN ? "前" : "ago";
   const sec = Math.round(absDiff / 1000);
   if (sec < 60) {
-    return diff < 0 ? "in <1m" : `${sec}s ago`;
+    if (diff < 0) {
+      return isZhCN ? "不到 1 分钟后" : "in <1m";
+    }
+    return isZhCN ? `${sec} 秒${suffix}` : `${sec}s ago`;
   }
   const min = Math.round(sec / 60);
   if (min < 60) {
-    return `${min}m ${suffix}`;
+    return isZhCN ? `${min} 分钟${suffix}` : `${min}m ${suffix}`;
   }
   const hr = Math.round(min / 60);
   if (hr < 48) {
-    return `${hr}h ${suffix}`;
+    return isZhCN ? `${hr} 小时${suffix}` : `${hr}h ${suffix}`;
   }
   const day = Math.round(hr / 24);
-  return `${day}d ${suffix}`;
+  return isZhCN ? `${day} 天${suffix}` : `${day}d ${suffix}`;
 }
 
 export function formatDurationMs(ms?: number | null): string {

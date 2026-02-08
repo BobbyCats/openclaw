@@ -17,6 +17,7 @@ import {
   resolveToolProfilePolicy,
 } from "../../../../src/agents/tool-policy.js";
 import { formatAgo } from "../format.ts";
+import { t, tSkillDesc } from "../i18n.js";
 import {
   formatCronPayload,
   formatCronSchedule,
@@ -82,96 +83,126 @@ export type AgentsProps = {
   onAgentSkillsDisableAll: (agentId: string) => void;
 };
 
-const TOOL_SECTIONS = [
-  {
-    id: "fs",
-    label: "Files",
-    tools: [
-      { id: "read", label: "read", description: "Read file contents" },
-      { id: "write", label: "write", description: "Create or overwrite files" },
-      { id: "edit", label: "edit", description: "Make precise edits" },
-      { id: "apply_patch", label: "apply_patch", description: "Patch files (OpenAI)" },
-    ],
-  },
-  {
-    id: "runtime",
-    label: "Runtime",
-    tools: [
-      { id: "exec", label: "exec", description: "Run shell commands" },
-      { id: "process", label: "process", description: "Manage background processes" },
-    ],
-  },
-  {
-    id: "web",
-    label: "Web",
-    tools: [
-      { id: "web_search", label: "web_search", description: "Search the web" },
-      { id: "web_fetch", label: "web_fetch", description: "Fetch web content" },
-    ],
-  },
-  {
-    id: "memory",
-    label: "Memory",
-    tools: [
-      { id: "memory_search", label: "memory_search", description: "Semantic search" },
-      { id: "memory_get", label: "memory_get", description: "Read memory files" },
-    ],
-  },
-  {
-    id: "sessions",
-    label: "Sessions",
-    tools: [
-      { id: "sessions_list", label: "sessions_list", description: "List sessions" },
-      { id: "sessions_history", label: "sessions_history", description: "Session history" },
-      { id: "sessions_send", label: "sessions_send", description: "Send to session" },
-      { id: "sessions_spawn", label: "sessions_spawn", description: "Spawn sub-agent" },
-      { id: "session_status", label: "session_status", description: "Session status" },
-    ],
-  },
-  {
-    id: "ui",
-    label: "UI",
-    tools: [
-      { id: "browser", label: "browser", description: "Control web browser" },
-      { id: "canvas", label: "canvas", description: "Control canvases" },
-    ],
-  },
-  {
-    id: "messaging",
-    label: "Messaging",
-    tools: [{ id: "message", label: "message", description: "Send messages" }],
-  },
-  {
-    id: "automation",
-    label: "Automation",
-    tools: [
-      { id: "cron", label: "cron", description: "Schedule tasks" },
-      { id: "gateway", label: "gateway", description: "Gateway control" },
-    ],
-  },
-  {
-    id: "nodes",
-    label: "Nodes",
-    tools: [{ id: "nodes", label: "nodes", description: "Nodes + devices" }],
-  },
-  {
-    id: "agents",
-    label: "Agents",
-    tools: [{ id: "agents_list", label: "agents_list", description: "List agents" }],
-  },
-  {
-    id: "media",
-    label: "Media",
-    tools: [{ id: "image", label: "image", description: "Image understanding" }],
-  },
-];
+function getToolSections() {
+  return [
+    {
+      id: "fs",
+      label: t("agents.toolSection.files"),
+      tools: [
+        { id: "read", label: "read", description: t("agents.tool.readDesc") },
+        { id: "write", label: "write", description: t("agents.tool.writeDesc") },
+        { id: "edit", label: "edit", description: t("agents.tool.editDesc") },
+        { id: "apply_patch", label: "apply_patch", description: t("agents.tool.applyPatchDesc") },
+      ],
+    },
+    {
+      id: "runtime",
+      label: t("agents.toolSection.runtime"),
+      tools: [
+        { id: "exec", label: "exec", description: t("agents.tool.execDesc") },
+        { id: "process", label: "process", description: t("agents.tool.processDesc") },
+      ],
+    },
+    {
+      id: "web",
+      label: t("agents.toolSection.web"),
+      tools: [
+        { id: "web_search", label: "web_search", description: t("agents.tool.webSearchDesc") },
+        { id: "web_fetch", label: "web_fetch", description: t("agents.tool.webFetchDesc") },
+      ],
+    },
+    {
+      id: "memory",
+      label: t("agents.toolSection.memory"),
+      tools: [
+        {
+          id: "memory_search",
+          label: "memory_search",
+          description: t("agents.tool.memorySearchDesc"),
+        },
+        { id: "memory_get", label: "memory_get", description: t("agents.tool.memoryGetDesc") },
+      ],
+    },
+    {
+      id: "sessions",
+      label: t("agents.toolSection.sessions"),
+      tools: [
+        {
+          id: "sessions_list",
+          label: "sessions_list",
+          description: t("agents.tool.sessionsListDesc"),
+        },
+        {
+          id: "sessions_history",
+          label: "sessions_history",
+          description: t("agents.tool.sessionsHistoryDesc"),
+        },
+        {
+          id: "sessions_send",
+          label: "sessions_send",
+          description: t("agents.tool.sessionsSendDesc"),
+        },
+        {
+          id: "sessions_spawn",
+          label: "sessions_spawn",
+          description: t("agents.tool.sessionsSpawnDesc"),
+        },
+        {
+          id: "session_status",
+          label: "session_status",
+          description: t("agents.tool.sessionStatusDesc"),
+        },
+      ],
+    },
+    {
+      id: "ui",
+      label: t("agents.toolSection.ui"),
+      tools: [
+        { id: "browser", label: "browser", description: t("agents.tool.browserDesc") },
+        { id: "canvas", label: "canvas", description: t("agents.tool.canvasDesc") },
+      ],
+    },
+    {
+      id: "messaging",
+      label: t("agents.toolSection.messaging"),
+      tools: [{ id: "message", label: "message", description: t("agents.tool.messageDesc") }],
+    },
+    {
+      id: "automation",
+      label: t("agents.toolSection.automation"),
+      tools: [
+        { id: "cron", label: "cron", description: t("agents.tool.cronDesc") },
+        { id: "gateway", label: "gateway", description: t("agents.tool.gatewayDesc") },
+      ],
+    },
+    {
+      id: "nodes",
+      label: t("agents.toolSection.nodes"),
+      tools: [{ id: "nodes", label: "nodes", description: t("agents.tool.nodesDesc") }],
+    },
+    {
+      id: "agents",
+      label: t("agents.toolSection.agents"),
+      tools: [
+        { id: "agents_list", label: "agents_list", description: t("agents.tool.agentsListDesc") },
+      ],
+    },
+    {
+      id: "media",
+      label: t("agents.toolSection.media"),
+      tools: [{ id: "image", label: "image", description: t("agents.tool.imageDesc") }],
+    },
+  ];
+}
 
-const PROFILE_OPTIONS = [
-  { id: "minimal", label: "Minimal" },
-  { id: "coding", label: "Coding" },
-  { id: "messaging", label: "Messaging" },
-  { id: "full", label: "Full" },
-] as const;
+function getProfileOptions() {
+  return [
+    { id: "minimal", label: t("agents.profile.minimal") },
+    { id: "coding", label: t("agents.profile.coding") },
+    { id: "messaging", label: t("agents.profile.messaging") },
+    { id: "full", label: t("agents.profile.full") },
+  ];
+}
 
 type ToolPolicy = {
   allow?: string[];
@@ -258,7 +289,7 @@ function resolveAgentEmoji(
 }
 
 function agentBadgeText(agentId: string, defaultId: string | null) {
-  return defaultId && agentId === defaultId ? "default" : null;
+  return defaultId && agentId === defaultId ? t("agents.default") : null;
 }
 
 function formatBytes(bytes?: number) {
@@ -327,7 +358,9 @@ function buildAgentContext(
     model: modelLabel,
     identityName,
     identityEmoji,
-    skillsLabel: skillFilter ? `${skillCount} selected` : "all skills",
+    skillsLabel: skillFilter
+      ? t("agents.overview.selected", { count: skillCount ?? 0 })
+      : t("agents.overview.allSkills"),
     isDefault: Boolean(defaultId && agent.id === defaultId),
   };
 }
@@ -441,11 +474,14 @@ function buildModelOptions(configForm: Record<string, unknown> | null, current?:
   const options = resolveConfiguredModels(configForm);
   const hasCurrent = current ? options.some((option) => option.value === current) : false;
   if (current && !hasCurrent) {
-    options.unshift({ value: current, label: `Current (${current})` });
+    options.unshift({
+      value: current,
+      label: t("agents.overview.currentModel", { model: current }),
+    });
   }
   if (options.length === 0) {
     return html`
-      <option value="" disabled>No configured models</option>
+      <option value="" disabled>${t("agents.overview.noConfiguredModels")}</option>
     `;
   }
   return options.map((option) => html`<option value=${option.value}>${option.label}</option>`);
@@ -547,11 +583,11 @@ export function renderAgents(props: AgentsProps) {
       <section class="card agents-sidebar">
         <div class="row" style="justify-content: space-between;">
           <div>
-            <div class="card-title">Agents</div>
-            <div class="card-sub">${agents.length} configured.</div>
+            <div class="card-title">${t("agents.title")}</div>
+            <div class="card-sub">${t("agents.configured", { count: agents.length })}</div>
           </div>
           <button class="btn btn--sm" ?disabled=${props.loading} @click=${props.onRefresh}>
-            ${props.loading ? "Loading…" : "Refresh"}
+            ${props.loading ? t("agents.loading") : t("agents.refresh")}
           </button>
         </div>
         ${
@@ -563,7 +599,7 @@ export function renderAgents(props: AgentsProps) {
           ${
             agents.length === 0
               ? html`
-                  <div class="muted">No agents found.</div>
+                  <div class="muted">${t("agents.noAgents")}</div>
                 `
               : agents.map((agent) => {
                   const badge = agentBadgeText(agent.id, defaultId);
@@ -593,8 +629,8 @@ export function renderAgents(props: AgentsProps) {
           !selectedAgent
             ? html`
                 <div class="card">
-                  <div class="card-title">Select an agent</div>
-                  <div class="card-sub">Pick an agent to inspect its workspace and tools.</div>
+                  <div class="card-title">${t("agents.selectAgent")}</div>
+                  <div class="card-sub">${t("agents.selectAgentSub")}</div>
                 </div>
               `
             : html`
@@ -727,7 +763,7 @@ function renderAgentHeader(
 ) {
   const badge = agentBadgeText(agent.id, defaultId);
   const displayName = normalizeAgentLabel(agent);
-  const subtitle = agent.identity?.theme?.trim() || "Agent workspace and routing.";
+  const subtitle = agent.identity?.theme?.trim() || t("agents.headerSub");
   const emoji = resolveAgentEmoji(agent, agentIdentity);
   return html`
     <section class="card agent-header">
@@ -750,12 +786,12 @@ function renderAgentHeader(
 
 function renderAgentTabs(active: AgentsPanel, onSelect: (panel: AgentsPanel) => void) {
   const tabs: Array<{ id: AgentsPanel; label: string }> = [
-    { id: "overview", label: "Overview" },
-    { id: "files", label: "Files" },
-    { id: "tools", label: "Tools" },
-    { id: "skills", label: "Skills" },
-    { id: "channels", label: "Channels" },
-    { id: "cron", label: "Cron Jobs" },
+    { id: "overview", label: t("agents.tab.overview") },
+    { id: "files", label: t("agents.tab.files") },
+    { id: "tools", label: t("agents.tab.tools") },
+    { id: "skills", label: t("agents.tab.skills") },
+    { id: "channels", label: t("agents.tab.channels") },
+    { id: "cron", label: t("agents.tab.cronJobs") },
   ];
   return html`
     <div class="agent-tabs">
@@ -833,49 +869,49 @@ function renderAgentOverview(params: {
   const skillFilter = Array.isArray(config.entry?.skills) ? config.entry?.skills : null;
   const skillCount = skillFilter?.length ?? null;
   const identityStatus = agentIdentityLoading
-    ? "Loading…"
+    ? t("agents.overview.identityLoading")
     : agentIdentityError
-      ? "Unavailable"
+      ? t("agents.overview.identityUnavailable")
       : "";
   const isDefault = Boolean(params.defaultId && agent.id === params.defaultId);
 
   return html`
     <section class="card">
-      <div class="card-title">Overview</div>
-      <div class="card-sub">Workspace paths and identity metadata.</div>
+      <div class="card-title">${t("agents.overview.title")}</div>
+      <div class="card-sub">${t("agents.overview.sub")}</div>
       <div class="agents-overview-grid" style="margin-top: 16px;">
         <div class="agent-kv">
-          <div class="label">Workspace</div>
+          <div class="label">${t("agents.overview.workspace")}</div>
           <div class="mono">${workspace}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Primary Model</div>
+          <div class="label">${t("agents.overview.primaryModel")}</div>
           <div class="mono">${model}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Identity Name</div>
+          <div class="label">${t("agents.overview.identityName")}</div>
           <div>${identityName}</div>
           ${identityStatus ? html`<div class="agent-kv-sub muted">${identityStatus}</div>` : nothing}
         </div>
         <div class="agent-kv">
-          <div class="label">Default</div>
-          <div>${isDefault ? "yes" : "no"}</div>
+          <div class="label">${t("agents.overview.defaultLabel")}</div>
+          <div>${isDefault ? t("agents.overview.yes") : t("agents.overview.no")}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Identity Emoji</div>
+          <div class="label">${t("agents.overview.identityEmoji")}</div>
           <div>${identityEmoji}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Skills Filter</div>
-          <div>${skillFilter ? `${skillCount} selected` : "all skills"}</div>
+          <div class="label">${t("agents.overview.skillsFilter")}</div>
+          <div>${skillFilter ? t("agents.overview.selected", { count: skillCount ?? 0 }) : t("agents.overview.allSkills")}</div>
         </div>
       </div>
 
       <div class="agent-model-select" style="margin-top: 20px;">
-        <div class="label">Model Selection</div>
+        <div class="label">${t("agents.overview.modelSelection")}</div>
         <div class="row" style="gap: 12px; flex-wrap: wrap;">
           <label class="field" style="min-width: 260px; flex: 1;">
-            <span>Primary model${isDefault ? " (default)" : ""}</span>
+            <span>${isDefault ? t("agents.overview.primaryModelFieldDefault") : t("agents.overview.primaryModelField")}</span>
             <select
               .value=${effectivePrimary ?? ""}
               ?disabled=${!configForm || configLoading || configSaving}
@@ -888,7 +924,9 @@ function renderAgentOverview(params: {
                   : html`
                       <option value="">
                         ${
-                          defaultPrimary ? `Inherit default (${defaultPrimary})` : "Inherit default"
+                          defaultPrimary
+                            ? t("agents.overview.inheritDefaultWith", { model: defaultPrimary })
+                            : t("agents.overview.inheritDefault")
                         }
                       </option>
                     `
@@ -897,7 +935,7 @@ function renderAgentOverview(params: {
             </select>
           </label>
           <label class="field" style="min-width: 260px; flex: 1;">
-            <span>Fallbacks (comma-separated)</span>
+            <span>${t("agents.overview.fallbacks")}</span>
             <input
               .value=${fallbackText}
               ?disabled=${!configForm || configLoading || configSaving}
@@ -916,14 +954,14 @@ function renderAgentOverview(params: {
             ?disabled=${configLoading}
             @click=${onConfigReload}
           >
-            Reload Config
+            ${t("agents.overview.reloadConfig")}
           </button>
           <button
             class="btn btn--sm primary"
             ?disabled=${configSaving || !configDirty}
             @click=${onConfigSave}
           >
-            ${configSaving ? "Saving…" : "Save"}
+            ${configSaving ? t("agents.overview.saving") : t("agents.overview.save")}
           </button>
         </div>
       </div>
@@ -934,32 +972,32 @@ function renderAgentOverview(params: {
 function renderAgentContextCard(context: AgentContext, subtitle: string) {
   return html`
     <section class="card">
-      <div class="card-title">Agent Context</div>
+      <div class="card-title">${t("agents.context.title")}</div>
       <div class="card-sub">${subtitle}</div>
       <div class="agents-overview-grid" style="margin-top: 16px;">
         <div class="agent-kv">
-          <div class="label">Workspace</div>
+          <div class="label">${t("agents.overview.workspace")}</div>
           <div class="mono">${context.workspace}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Primary Model</div>
+          <div class="label">${t("agents.overview.primaryModel")}</div>
           <div class="mono">${context.model}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Identity Name</div>
+          <div class="label">${t("agents.overview.identityName")}</div>
           <div>${context.identityName}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Identity Emoji</div>
+          <div class="label">${t("agents.overview.identityEmoji")}</div>
           <div>${context.identityEmoji}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Skills Filter</div>
+          <div class="label">${t("agents.overview.skillsFilter")}</div>
           <div>${context.skillsLabel}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Default</div>
-          <div>${context.isDefault ? "yes" : "no"}</div>
+          <div class="label">${t("agents.overview.defaultLabel")}</div>
+          <div>${context.isDefault ? t("agents.overview.yes") : t("agents.overview.no")}</div>
         </div>
       </div>
     </section>
@@ -1112,22 +1150,24 @@ function renderAgentChannels(params: {
     params.agentIdentity,
   );
   const entries = resolveChannelEntries(params.snapshot);
-  const lastSuccessLabel = params.lastSuccess ? formatAgo(params.lastSuccess) : "never";
+  const lastSuccessLabel = params.lastSuccess
+    ? formatAgo(params.lastSuccess)
+    : t("agents.channels.never");
   return html`
     <section class="grid grid-cols-2">
-      ${renderAgentContextCard(context, "Workspace, identity, and model configuration.")}
+      ${renderAgentContextCard(context, t("agents.context.workspaceIdentityModel"))}
       <section class="card">
         <div class="row" style="justify-content: space-between;">
           <div>
-            <div class="card-title">Channels</div>
-            <div class="card-sub">Gateway-wide channel status snapshot.</div>
+            <div class="card-title">${t("agents.channels.title")}</div>
+            <div class="card-sub">${t("agents.channels.sub")}</div>
           </div>
           <button class="btn btn--sm" ?disabled=${params.loading} @click=${params.onRefresh}>
-            ${params.loading ? "Refreshing…" : "Refresh"}
+            ${params.loading ? t("agents.channels.refreshing") : t("agents.refresh")}
           </button>
         </div>
         <div class="muted" style="margin-top: 8px;">
-          Last refresh: ${lastSuccessLabel}
+          ${t("agents.channels.lastRefresh", { time: lastSuccessLabel })}
         </div>
         ${
           params.error
@@ -1137,26 +1177,31 @@ function renderAgentChannels(params: {
         ${
           !params.snapshot
             ? html`
-                <div class="callout info" style="margin-top: 12px">Load channels to see live status.</div>
+                <div class="callout info" style="margin-top: 12px">${t("agents.channels.loadHint")}</div>
               `
             : nothing
         }
         ${
           entries.length === 0
             ? html`
-                <div class="muted" style="margin-top: 16px">No channels found.</div>
+                <div class="muted" style="margin-top: 16px">${t("agents.channels.noChannels")}</div>
               `
             : html`
               <div class="list" style="margin-top: 16px;">
                 ${entries.map((entry) => {
                   const summary = summarizeChannelAccounts(entry.accounts);
                   const status = summary.total
-                    ? `${summary.connected}/${summary.total} connected`
-                    : "no accounts";
+                    ? t("agents.channels.connectedStatus", {
+                        connected: summary.connected,
+                        total: summary.total,
+                      })
+                    : t("agents.channels.noAccounts");
                   const config = summary.configured
-                    ? `${summary.configured} configured`
-                    : "not configured";
-                  const enabled = summary.total ? `${summary.enabled} enabled` : "disabled";
+                    ? t("agents.channels.configuredCount", { count: summary.configured })
+                    : t("agents.channels.notConfigured");
+                  const enabled = summary.total
+                    ? t("agents.channels.enabledCount", { count: summary.enabled })
+                    : t("agents.channels.disabledStatus");
                   const extras = resolveChannelExtras(params.configForm, entry.id);
                   return html`
                     <div class="list-item">
@@ -1207,30 +1252,30 @@ function renderAgentCron(params: {
   const jobs = params.jobs.filter((job) => job.agentId === params.agent.id);
   return html`
     <section class="grid grid-cols-2">
-      ${renderAgentContextCard(context, "Workspace and scheduling targets.")}
+      ${renderAgentContextCard(context, t("agents.context.workspaceScheduling"))}
       <section class="card">
         <div class="row" style="justify-content: space-between;">
           <div>
-            <div class="card-title">Scheduler</div>
-            <div class="card-sub">Gateway cron status.</div>
+            <div class="card-title">${t("agents.cron.title")}</div>
+            <div class="card-sub">${t("agents.cron.sub")}</div>
           </div>
           <button class="btn btn--sm" ?disabled=${params.loading} @click=${params.onRefresh}>
-            ${params.loading ? "Refreshing…" : "Refresh"}
+            ${params.loading ? t("agents.channels.refreshing") : t("agents.refresh")}
           </button>
         </div>
         <div class="stat-grid" style="margin-top: 16px;">
           <div class="stat">
-            <div class="stat-label">Enabled</div>
+            <div class="stat-label">${t("agents.cron.enabled")}</div>
             <div class="stat-value">
-              ${params.status ? (params.status.enabled ? "Yes" : "No") : "n/a"}
+              ${params.status ? (params.status.enabled ? t("agents.cron.yes") : t("agents.cron.no")) : t("agents.cron.na")}
             </div>
           </div>
           <div class="stat">
-            <div class="stat-label">Jobs</div>
-            <div class="stat-value">${params.status?.jobs ?? "n/a"}</div>
+            <div class="stat-label">${t("agents.cron.jobs")}</div>
+            <div class="stat-value">${params.status?.jobs ?? t("agents.cron.na")}</div>
           </div>
           <div class="stat">
-            <div class="stat-label">Next wake</div>
+            <div class="stat-label">${t("agents.cron.nextWake")}</div>
             <div class="stat-value">${formatNextRun(params.status?.nextWakeAtMs ?? null)}</div>
           </div>
         </div>
@@ -1242,12 +1287,12 @@ function renderAgentCron(params: {
       </section>
     </section>
     <section class="card">
-      <div class="card-title">Agent Cron Jobs</div>
-      <div class="card-sub">Scheduled jobs targeting this agent.</div>
+      <div class="card-title">${t("agents.cron.agentJobs")}</div>
+      <div class="card-sub">${t("agents.cron.agentJobsSub")}</div>
       ${
         jobs.length === 0
           ? html`
-              <div class="muted" style="margin-top: 16px">No jobs assigned.</div>
+              <div class="muted" style="margin-top: 16px">${t("agents.cron.noJobs")}</div>
             `
           : html`
               <div class="list" style="margin-top: 16px;">
@@ -1260,7 +1305,7 @@ function renderAgentCron(params: {
                       <div class="chip-row" style="margin-top: 6px;">
                         <span class="chip">${formatCronSchedule(job)}</span>
                         <span class="chip ${job.enabled ? "chip-ok" : "chip-warn"}">
-                          ${job.enabled ? "enabled" : "disabled"}
+                          ${job.enabled ? t("agents.cron.jobEnabled") : t("agents.cron.jobDisabled")}
                         </span>
                         <span class="chip">${job.sessionTarget}</span>
                       </div>
@@ -1306,18 +1351,18 @@ function renderAgentFiles(params: {
     <section class="card">
       <div class="row" style="justify-content: space-between;">
         <div>
-          <div class="card-title">Core Files</div>
-          <div class="card-sub">Bootstrap persona, identity, and tool guidance.</div>
+          <div class="card-title">${t("agents.files.title")}</div>
+          <div class="card-sub">${t("agents.files.sub")}</div>
         </div>
         <button
           class="btn btn--sm"
           ?disabled=${params.agentFilesLoading}
           @click=${() => params.onLoadFiles(params.agentId)}
         >
-          ${params.agentFilesLoading ? "Loading…" : "Refresh"}
+          ${params.agentFilesLoading ? t("agents.loading") : t("agents.refresh")}
         </button>
       </div>
-      ${list ? html`<div class="muted mono" style="margin-top: 8px;">Workspace: ${list.workspace}</div>` : nothing}
+      ${list ? html`<div class="muted mono" style="margin-top: 8px;">${t("agents.files.workspace", { path: list.workspace })}</div>` : nothing}
       ${
         params.agentFilesError
           ? html`<div class="callout danger" style="margin-top: 12px;">${
@@ -1329,7 +1374,7 @@ function renderAgentFiles(params: {
         !list
           ? html`
               <div class="callout info" style="margin-top: 12px">
-                Load the agent workspace files to edit core instructions.
+                ${t("agents.files.loadHint")}
               </div>
             `
           : html`
@@ -1338,7 +1383,7 @@ function renderAgentFiles(params: {
                   ${
                     files.length === 0
                       ? html`
-                          <div class="muted">No files found.</div>
+                          <div class="muted">${t("agents.files.noFiles")}</div>
                         `
                       : files.map((file) =>
                           renderAgentFileRow(file, active, () => params.onSelectFile(file.name)),
@@ -1349,7 +1394,7 @@ function renderAgentFiles(params: {
                   ${
                     !activeEntry
                       ? html`
-                          <div class="muted">Select a file to edit.</div>
+                          <div class="muted">${t("agents.files.selectFile")}</div>
                         `
                       : html`
                           <div class="agent-file-header">
@@ -1363,14 +1408,14 @@ function renderAgentFiles(params: {
                                 ?disabled=${!isDirty}
                                 @click=${() => params.onFileReset(activeEntry.name)}
                               >
-                                Reset
+                                ${t("agents.files.reset")}
                               </button>
                               <button
                                 class="btn btn--sm primary"
                                 ?disabled=${params.agentFileSaving || !isDirty}
                                 @click=${() => params.onFileSave(activeEntry.name)}
                               >
-                                ${params.agentFileSaving ? "Saving…" : "Save"}
+                                ${params.agentFileSaving ? t("agents.overview.saving") : t("agents.overview.save")}
                               </button>
                             </div>
                           </div>
@@ -1378,13 +1423,13 @@ function renderAgentFiles(params: {
                             activeEntry.missing
                               ? html`
                                   <div class="callout info" style="margin-top: 10px">
-                                    This file is missing. Saving will create it in the agent workspace.
+                                    ${t("agents.files.missingHint")}
                                   </div>
                                 `
                               : nothing
                           }
                           <label class="field" style="margin-top: 12px;">
-                            <span>Content</span>
+                            <span>${t("agents.files.content")}</span>
                             <textarea
                               .value=${draft}
                               @input=${(e: Event) =>
@@ -1406,7 +1451,7 @@ function renderAgentFiles(params: {
 
 function renderAgentFileRow(file: AgentFileEntry, active: string | null, onSelect: () => void) {
   const status = file.missing
-    ? "Missing"
+    ? t("agents.files.missingStatus")
     : `${formatBytes(file.size)} · ${formatAgo(file.updatedAtMs ?? null)}`;
   return html`
     <button
@@ -1421,7 +1466,7 @@ function renderAgentFileRow(file: AgentFileEntry, active: string | null, onSelec
       ${
         file.missing
           ? html`
-              <span class="agent-pill warn">missing</span>
+              <span class="agent-pill warn">${t("agents.files.missingPill")}</span>
             `
           : nothing
       }
@@ -1445,10 +1490,10 @@ function renderAgentTools(params: {
   const globalTools = config.globalTools ?? {};
   const profile = agentTools.profile ?? globalTools.profile ?? "full";
   const profileSource = agentTools.profile
-    ? "agent override"
+    ? t("agents.tools.agentOverride")
     : globalTools.profile
-      ? "global default"
-      : "default";
+      ? t("agents.tools.globalDefault")
+      : t("agents.tools.defaultSource");
   const hasAgentAllow = Array.isArray(agentTools.allow) && agentTools.allow.length > 0;
   const hasGlobalAllow = Array.isArray(globalTools.allow) && globalTools.allow.length > 0;
   const editable =
@@ -1462,7 +1507,8 @@ function renderAgentTools(params: {
   const basePolicy = hasAgentAllow
     ? { allow: agentTools.allow ?? [], deny: agentTools.deny ?? [] }
     : (resolveToolProfilePolicy(profile) ?? undefined);
-  const toolIds = TOOL_SECTIONS.flatMap((section) => section.tools.map((tool) => tool.id));
+  const sections = getToolSections();
+  const toolIds = sections.flatMap((section) => section.tools.map((tool) => tool.id));
 
   const resolveAllowed = (toolId: string) => {
     const baseAllowed = isAllowedByPolicy(toolId, basePolicy);
@@ -1525,10 +1571,10 @@ function renderAgentTools(params: {
     <section class="card">
       <div class="row" style="justify-content: space-between;">
         <div>
-          <div class="card-title">Tool Access</div>
+          <div class="card-title">${t("agents.tools.title")}</div>
           <div class="card-sub">
-            Profile + per-tool overrides for this agent.
-            <span class="mono">${enabledCount}/${toolIds.length}</span> enabled.
+            ${t("agents.tools.sub")}
+            <span class="mono">${enabledCount}/${toolIds.length}</span> ${t("agents.tools.enabled")}
           </div>
         </div>
         <div class="row" style="gap: 8px;">
@@ -1537,28 +1583,28 @@ function renderAgentTools(params: {
             ?disabled=${!editable}
             @click=${() => updateAll(true)}
           >
-            Enable All
+            ${t("agents.tools.enableAll")}
           </button>
           <button
             class="btn btn--sm"
             ?disabled=${!editable}
             @click=${() => updateAll(false)}
           >
-            Disable All
+            ${t("agents.tools.disableAll")}
           </button>
           <button
             class="btn btn--sm"
             ?disabled=${params.configLoading}
             @click=${params.onConfigReload}
           >
-            Reload Config
+            ${t("agents.overview.reloadConfig")}
           </button>
           <button
             class="btn btn--sm primary"
             ?disabled=${params.configSaving || !params.configDirty}
             @click=${params.onConfigSave}
           >
-            ${params.configSaving ? "Saving…" : "Save"}
+            ${params.configSaving ? t("agents.overview.saving") : t("agents.overview.save")}
           </button>
         </div>
       </div>
@@ -1567,7 +1613,7 @@ function renderAgentTools(params: {
         !params.configForm
           ? html`
               <div class="callout info" style="margin-top: 12px">
-                Load the gateway config to adjust tool profiles.
+                ${t("agents.tools.loadHint")}
               </div>
             `
           : nothing
@@ -1576,7 +1622,7 @@ function renderAgentTools(params: {
         hasAgentAllow
           ? html`
               <div class="callout info" style="margin-top: 12px">
-                This agent is using an explicit allowlist in config. Tool overrides are managed in the Config tab.
+                ${t("agents.tools.explicitAllowHint")}
               </div>
             `
           : nothing
@@ -1585,7 +1631,7 @@ function renderAgentTools(params: {
         hasGlobalAllow
           ? html`
               <div class="callout info" style="margin-top: 12px">
-                Global tools.allow is set. Agent overrides cannot enable tools that are globally blocked.
+                ${t("agents.tools.globalAllowHint")}
               </div>
             `
           : nothing
@@ -1593,19 +1639,19 @@ function renderAgentTools(params: {
 
       <div class="agent-tools-meta" style="margin-top: 16px;">
         <div class="agent-kv">
-          <div class="label">Profile</div>
+          <div class="label">${t("agents.tools.profileLabel")}</div>
           <div class="mono">${profile}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Source</div>
+          <div class="label">${t("agents.tools.sourceLabel")}</div>
           <div>${profileSource}</div>
         </div>
         ${
           params.configDirty
             ? html`
                 <div class="agent-kv">
-                  <div class="label">Status</div>
-                  <div class="mono">unsaved</div>
+                  <div class="label">${t("agents.tools.statusLabel")}</div>
+                  <div class="mono">${t("agents.tools.unsaved")}</div>
                 </div>
               `
             : nothing
@@ -1613,9 +1659,9 @@ function renderAgentTools(params: {
       </div>
 
       <div class="agent-tools-presets" style="margin-top: 16px;">
-        <div class="label">Quick Presets</div>
+        <div class="label">${t("agents.tools.quickPresets")}</div>
         <div class="agent-tools-buttons">
-          ${PROFILE_OPTIONS.map(
+          ${getProfileOptions().map(
             (option) => html`
               <button
                 class="btn btn--sm ${profile === option.id ? "active" : ""}"
@@ -1631,13 +1677,13 @@ function renderAgentTools(params: {
             ?disabled=${!editable}
             @click=${() => params.onProfileChange(params.agentId, null, false)}
           >
-            Inherit
+            ${t("agents.tools.inherit")}
           </button>
         </div>
       </div>
 
       <div class="agent-tools-grid" style="margin-top: 20px;">
-        ${TOOL_SECTIONS.map(
+        ${sections.map(
           (section) =>
             html`
             <div class="agent-tools-section">
@@ -1679,33 +1725,36 @@ type SkillGroup = {
   skills: SkillStatusEntry[];
 };
 
-const SKILL_SOURCE_GROUPS: Array<{ id: string; label: string; sources: string[] }> = [
-  { id: "workspace", label: "Workspace Skills", sources: ["openclaw-workspace"] },
-  { id: "built-in", label: "Built-in Skills", sources: ["openclaw-bundled"] },
-  { id: "installed", label: "Installed Skills", sources: ["openclaw-managed"] },
-  { id: "extra", label: "Extra Skills", sources: ["openclaw-extra"] },
-];
+function getSkillSourceGroups(): Array<{ id: string; label: string; sources: string[] }> {
+  return [
+    { id: "workspace", label: t("agents.skills.workspaceSkills"), sources: ["openclaw-workspace"] },
+    { id: "built-in", label: t("agents.skills.builtInSkills"), sources: ["openclaw-bundled"] },
+    { id: "installed", label: t("agents.skills.installedSkills"), sources: ["openclaw-managed"] },
+    { id: "extra", label: t("agents.skills.extraSkills"), sources: ["openclaw-extra"] },
+  ];
+}
 
 function groupSkills(skills: SkillStatusEntry[]): SkillGroup[] {
+  const sourceGroups = getSkillSourceGroups();
   const groups = new Map<string, SkillGroup>();
-  for (const def of SKILL_SOURCE_GROUPS) {
+  for (const def of sourceGroups) {
     groups.set(def.id, { id: def.id, label: def.label, skills: [] });
   }
-  const builtInGroup = SKILL_SOURCE_GROUPS.find((group) => group.id === "built-in");
-  const other: SkillGroup = { id: "other", label: "Other Skills", skills: [] };
+  const builtInGroup = sourceGroups.find((group) => group.id === "built-in");
+  const other: SkillGroup = { id: "other", label: t("agents.skills.otherSkills"), skills: [] };
   for (const skill of skills) {
     const match = skill.bundled
       ? builtInGroup
-      : SKILL_SOURCE_GROUPS.find((group) => group.sources.includes(skill.source));
+      : sourceGroups.find((group) => group.sources.includes(skill.source));
     if (match) {
       groups.get(match.id)?.skills.push(skill);
     } else {
       other.skills.push(skill);
     }
   }
-  const ordered = SKILL_SOURCE_GROUPS.map((group) => groups.get(group.id)).filter(
-    (group): group is SkillGroup => Boolean(group && group.skills.length > 0),
-  );
+  const ordered = sourceGroups
+    .map((group) => groups.get(group.id))
+    .filter((group): group is SkillGroup => Boolean(group && group.skills.length > 0));
   if (other.skills.length > 0) {
     ordered.push(other);
   }
@@ -1741,7 +1790,10 @@ function renderAgentSkills(params: {
   const filter = params.filter.trim().toLowerCase();
   const filtered = filter
     ? rawSkills.filter((skill) =>
-        [skill.name, skill.description, skill.source].join(" ").toLowerCase().includes(filter),
+        [skill.name, skill.description, tSkillDesc(skill.skillKey, skill.description), skill.source]
+          .join(" ")
+          .toLowerCase()
+          .includes(filter),
       )
     : rawSkills;
   const groups = groupSkills(filtered);
@@ -1754,35 +1806,35 @@ function renderAgentSkills(params: {
     <section class="card">
       <div class="row" style="justify-content: space-between;">
         <div>
-          <div class="card-title">Skills</div>
+          <div class="card-title">${t("agents.skills.title")}</div>
           <div class="card-sub">
-            Per-agent skill allowlist and workspace skills.
+            ${t("agents.skills.sub")}
             ${totalCount > 0 ? html`<span class="mono">${enabledCount}/${totalCount}</span>` : nothing}
           </div>
         </div>
         <div class="row" style="gap: 8px;">
           <button class="btn btn--sm" ?disabled=${!editable} @click=${() => params.onClear(params.agentId)}>
-            Use All
+            ${t("agents.skills.useAll")}
           </button>
           <button class="btn btn--sm" ?disabled=${!editable} @click=${() => params.onDisableAll(params.agentId)}>
-            Disable All
+            ${t("agents.skills.disableAll")}
           </button>
           <button
             class="btn btn--sm"
             ?disabled=${params.configLoading}
             @click=${params.onConfigReload}
           >
-            Reload Config
+            ${t("agents.overview.reloadConfig")}
           </button>
           <button class="btn btn--sm" ?disabled=${params.loading} @click=${params.onRefresh}>
-            ${params.loading ? "Loading…" : "Refresh"}
+            ${params.loading ? t("agents.loading") : t("agents.refresh")}
           </button>
           <button
             class="btn btn--sm primary"
             ?disabled=${params.configSaving || !params.configDirty}
             @click=${params.onConfigSave}
           >
-            ${params.configSaving ? "Saving…" : "Save"}
+            ${params.configSaving ? t("agents.overview.saving") : t("agents.overview.save")}
           </button>
         </div>
       </div>
@@ -1791,7 +1843,7 @@ function renderAgentSkills(params: {
         !params.configForm
           ? html`
               <div class="callout info" style="margin-top: 12px">
-                Load the gateway config to set per-agent skills.
+                ${t("agents.skills.loadHint")}
               </div>
             `
           : nothing
@@ -1799,11 +1851,11 @@ function renderAgentSkills(params: {
       ${
         usingAllowlist
           ? html`
-              <div class="callout info" style="margin-top: 12px">This agent uses a custom skill allowlist.</div>
+              <div class="callout info" style="margin-top: 12px">${t("agents.skills.customAllowlist")}</div>
             `
           : html`
               <div class="callout info" style="margin-top: 12px">
-                All skills are enabled. Disabling any skill will create a per-agent allowlist.
+                ${t("agents.skills.allEnabled")}
               </div>
             `
       }
@@ -1811,7 +1863,7 @@ function renderAgentSkills(params: {
         !reportReady && !params.loading
           ? html`
               <div class="callout info" style="margin-top: 12px">
-                Load skills for this agent to view workspace-specific entries.
+                ${t("agents.skills.loadSkillsHint")}
               </div>
             `
           : nothing
@@ -1824,20 +1876,20 @@ function renderAgentSkills(params: {
 
       <div class="filters" style="margin-top: 14px;">
         <label class="field" style="flex: 1;">
-          <span>Filter</span>
+          <span>${t("agents.skills.filter")}</span>
           <input
             .value=${params.filter}
             @input=${(e: Event) => params.onFilterChange((e.target as HTMLInputElement).value)}
-            placeholder="Search skills"
+            placeholder=${t("agents.skills.searchSkills")}
           />
         </label>
-        <div class="muted">${filtered.length} shown</div>
+        <div class="muted">${t("agents.skills.shownCount", { count: filtered.length })}</div>
       </div>
 
       ${
         filtered.length === 0
           ? html`
-              <div class="muted" style="margin-top: 16px">No skills found.</div>
+              <div class="muted" style="margin-top: 16px">${t("agents.skills.noSkills")}</div>
             `
           : html`
               <div class="agent-skills-groups" style="margin-top: 16px;">
@@ -1908,10 +1960,10 @@ function renderAgentSkillRow(
   ];
   const reasons: string[] = [];
   if (skill.disabled) {
-    reasons.push("disabled");
+    reasons.push(t("agents.skills.disabled"));
   }
   if (skill.blockedByAllowlist) {
-    reasons.push("blocked by allowlist");
+    reasons.push(t("agents.skills.blockedByAllowlist"));
   }
   return html`
     <div class="list-item agent-skill-row">
@@ -1919,28 +1971,28 @@ function renderAgentSkillRow(
         <div class="list-title">
           ${skill.emoji ? `${skill.emoji} ` : ""}${skill.name}
         </div>
-        <div class="list-sub">${skill.description}</div>
+        <div class="list-sub">${tSkillDesc(skill.skillKey, skill.description)}</div>
         <div class="chip-row" style="margin-top: 6px;">
           <span class="chip">${skill.source}</span>
           <span class="chip ${skill.eligible ? "chip-ok" : "chip-warn"}">
-            ${skill.eligible ? "eligible" : "blocked"}
+            ${skill.eligible ? t("agents.skills.eligible") : t("agents.skills.blocked")}
           </span>
           ${
             skill.disabled
               ? html`
-                  <span class="chip chip-warn">disabled</span>
+                  <span class="chip chip-warn">${t("agents.skills.disabled")}</span>
                 `
               : nothing
           }
         </div>
         ${
           missing.length > 0
-            ? html`<div class="muted" style="margin-top: 6px;">Missing: ${missing.join(", ")}</div>`
+            ? html`<div class="muted" style="margin-top: 6px;">${t("agents.skills.missing", { items: missing.join(", ") })}</div>`
             : nothing
         }
         ${
           reasons.length > 0
-            ? html`<div class="muted" style="margin-top: 6px;">Reason: ${reasons.join(", ")}</div>`
+            ? html`<div class="muted" style="margin-top: 6px;">${t("agents.skills.reason", { items: reasons.join(", ") })}</div>`
             : nothing
         }
       </div>
